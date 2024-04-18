@@ -41,6 +41,7 @@ export class MappedBuffer<T> {
 
   /**
    * @constructor
+   * @name MappedBuffer
    * @param bufferPath The path of the buffer.
    * @param struct The struct of the buffer.
    */

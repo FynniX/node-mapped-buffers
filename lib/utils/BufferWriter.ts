@@ -7,14 +7,42 @@ import { Struct } from '../interfaces/Struct'
 import { StructCollection } from '../interfaces/StructCollection'
 import { getVarTypeSize } from './TypeSizes'
 
+/**
+ * @class
+ * @name BufferWriter
+ * @description A buffer writer.
+ */
 export class BufferWriter {
+  /**
+   * @private
+   * @name _buffer
+   * @description The buffer.
+   */
   private _buffer: Buffer = Buffer.alloc(0)
+
+  /**
+   * @private
+   * @name _endian
+   * @description The endianness.
+   */
   private readonly _endian: Endian
 
+  /**
+   * @constructor
+   * @name BufferWriter
+   * @param {Endian} [endian=Endian.Little] - The endianness.
+   */
   constructor(endian: Endian = Endian.Little) {
     this._endian = endian
   }
 
+  /**
+   * Writes a number to the buffer based on the specified type.
+   *
+   * @param {VarType} type - The type of the number.
+   * @param {number} value - The value to write.
+   * @return {void} This function does not return anything.
+   */
   public writeNumber(type: VarType, value: number): void {
     // Check weather the type is supported
     const varTypeSize = getVarTypeSize(type)
@@ -72,6 +100,13 @@ export class BufferWriter {
     this._buffer = Buffer.concat([this._buffer, tmpBuffer])
   }
 
+  /**
+   * Writes a boolean value to the buffer based on the specified type.
+   *
+   * @param {VarType} type - The type of the boolean value.
+   * @param {boolean} value - The boolean value to write.
+   * @return {void} This function does not return anything.
+   */
   public writeBool(type: VarType, value: boolean): void {
     // Check weather the type is supported
     const varTypeSize = getVarTypeSize(type)
@@ -129,6 +164,13 @@ export class BufferWriter {
     this._buffer = Buffer.concat([this._buffer, tmpBuffer])
   }
 
+  /**
+   * Writes an array to the buffer based on the given template and value.
+   *
+   * @param {ArrayCollection} template - The template of the array to write.
+   * @param {unknown[]} value - The array to write.
+   * @return {void} This function does not return anything.
+   */
   public writeArray(template: ArrayCollection, value: unknown[]): void {
     for (let i = 0; i < template.size; i++) {
       // Regular type
@@ -158,6 +200,13 @@ export class BufferWriter {
     }
   }
 
+  /**
+   * A description of the entire function.
+   *
+   * @param {StructCollection} template - The template of the struct to write.
+   * @param {Struct} value - The struct value to write.
+   * @return {void} This function does not return anything.
+   */
   public writeStruct(template: StructCollection, value: Struct): void {
     for (const key in template) {
       const varType = template[key]
@@ -189,10 +238,21 @@ export class BufferWriter {
     }
   }
 
+  /**
+   * A description of the entire function.
+   *
+   * @return {Buffer} description of return value
+   */
   public getBuffer(): Buffer {
     return this._buffer
   }
 
+  /**
+   * A description of the entire function.
+   * @private
+   * @param {VarType} type - The variable type to get the internal type for.
+   * @return {VarType} The internal type of the given variable type.
+   */
   private getInternalType(type: VarType): VarType {
     const varTypeSize = getVarTypeSize(type)
 

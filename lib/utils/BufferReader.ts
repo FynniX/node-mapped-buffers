@@ -7,15 +7,43 @@ import { Struct } from '../interfaces/Struct'
 import { StructCollection } from '../interfaces/StructCollection'
 import { getVarTypeSize } from './TypeSizes'
 
+/**
+ * @class
+ * @name BufferReader
+ * @description A buffer reader.
+ */
 export class BufferReader {
+  /**
+   * @private
+   * @name _buffer
+   * @description The buffer.
+   */
   private _buffer: Buffer
+
+  /**
+   * @private
+   * @name _endian
+   * @description The endianness.
+   */
   private readonly _endian: Endian
 
+  /**
+   * @constructor
+   * @name BufferReader
+   * @param {Buffer} buffer - The buffer.
+   * @param {Endian} [endian=Endian.Little] - The endianness.
+   */
   constructor(buffer: Buffer, endian: Endian = Endian.Little) {
     this._buffer = buffer
     this._endian = endian
   }
 
+  /**
+   * Reads a number value from the buffer based on the given variable type.
+   *
+   * @param {VarType} type - The variable type to read the number value from.
+   * @return {number | null} The read number value or null if the buffer does not have enough bytes.
+   */
   public readNumber(type: VarType): number | null {
     // Check if the buffer has enough bytes
     const varTypeSize = getVarTypeSize(type)
@@ -75,6 +103,12 @@ export class BufferReader {
     return value
   }
 
+  /**
+   * Reads a boolean value from the buffer based on the given variable type.
+   *
+   * @param {VarType} type - The variable type to read the boolean value from.
+   * @return {boolean | null} The read boolean value or null if the buffer does not have enough bytes.
+   */
   public readBool(type: VarType): boolean | null {
     // Check if the buffer has enough bytes
     const varTypeSize = getVarTypeSize(type)
@@ -125,6 +159,12 @@ export class BufferReader {
     return value
   }
 
+  /**
+   * Reads an array from a template and returns it.
+   *
+   * @param {ArrayCollection} template - The template of the array to read.
+   * @return {unknown[]} The read array.
+   */
   public readArray(template: ArrayCollection): unknown[] {
     const arr: unknown[] = []
     for (let i = 0; i < template.size; i++) {
@@ -157,6 +197,12 @@ export class BufferReader {
     return arr
   }
 
+  /**
+   * Reads a struct from a template and returns it.
+   *
+   * @param {StructCollection} template - The template of the struct to read.
+   * @return {Struct | null} The read struct or null if the template is invalid.
+   */
   public readStruct(template: StructCollection): Struct | null {
     const struct = {} as Struct
 
@@ -192,6 +238,12 @@ export class BufferReader {
     return struct
   }
 
+  /**
+   * Returns the internal type of a given variable type.
+   * @private
+   * @param {VarType} type - The variable type to get the internal type for.
+   * @return {VarType} The internal type of the given variable type.
+   */
   private getInternalType(type: VarType): VarType {
     const varTypeSize = getVarTypeSize(type)
 

@@ -7,10 +7,22 @@ import { VarType } from '../enums/VarType'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const addon = require('../../build/Release/node-mapped-buffer')
 
+/**
+ * Returns the size of the given variable type.
+ *
+ * @param {VarType} type - The variable type to get the size of.
+ * @return {number | undefined} The size of the variable type, or undefined if the type is not recognized.
+ */
 export const getVarTypeSize = (type: VarType): number | undefined => {
   return addon.getVarTypeSize(type)
 }
 
+/**
+ * Calculates the size of a struct based on the given struct collection.
+ *
+ * @param {StructCollection} struct - The struct collection to calculate the size of.
+ * @return {number} The size of the struct.
+ */
 export const calculateStructSize = (struct: StructCollection): number => {
   let size = 0
 
@@ -41,6 +53,12 @@ export const calculateStructSize = (struct: StructCollection): number => {
   return size
 }
 
+/**
+ * Calculates the size of an array based on the given array collection.
+ *
+ * @param {ArrayCollection} arr - The array collection to calculate the size of.
+ * @return {number} The size of the array.
+ */
 export const calculateArraySize = (arr: ArrayCollection): number => {
   let size = 0
 
