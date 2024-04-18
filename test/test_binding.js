@@ -37,7 +37,7 @@ assert.doesNotThrow(() => {
 }, 'Not all functions are defined')
 
 // Create buffer for testing
-instance.create()
+assert.doesNotThrow(() => instance.create(), "create did throw an exception")
 
 // Test weather read returns struct
 assert.notStrictEqual(instance.read(), undefined, "read didn't return a value");
