@@ -40,7 +40,7 @@
     "format": "pnpm exec prettier lib/ --check --ignore-unknown",
     "format:fix": "pnpm exec prettier lib/ --write --ignore-unknown",
     "docs": "pnpm exec rimraf docs && pnpm exec typedoc",
-    "prepare": "pnpm exec husky"
+    "prepare": "husky"
   },
   "lint-staged": {
     "lib/**/*": [
