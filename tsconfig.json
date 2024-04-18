@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "lib": ["esnext"],
+    "target": "es6",
+    "outDir": "dist",
+    "declaration": true
+  },
+  "include": ["lib"]
+}

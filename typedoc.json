@@ -1,0 +1,12 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "name": "node-mapped-buffer",
+  "entryPointStrategy": "expand",
+  "entryPoints": ["./lib"],
+  "sort": ["source-order"],
+  "plugin": ["typedoc-material-theme"],
+  "themeColor": "#ff1e44",
+  "navigationLinks": {
+    "GitHub": "https://github.com/FynniX/node-mapped-buffer/"
+  }
+}
