@@ -1,7 +1,7 @@
 import { CollectionType } from '../enums/CollectionType.mjs';
 import { Endian } from '../enums/Endian.mjs';
 import { VarType } from '../enums/VarType.mjs';
-import { MappedBuffer } from '../index.mjs';
+import { getVarTypeSize } from './TypeSizes.mjs';
 
 class BufferReader {
     constructor(buffer, endian = Endian.Little) {
@@ -9,7 +9,7 @@ class BufferReader {
         this._endian = endian;
     }
     readNumber(type) {
-        const varTypeSize = MappedBuffer.getVarTypeSize(type);
+        const varTypeSize = getVarTypeSize(type);
         if (!varTypeSize || this._buffer.length < varTypeSize)
             return null;
         type = this.getInternalType(type);
@@ -74,7 +74,7 @@ class BufferReader {
         return value;
     }
     readBool(type) {
-        const varTypeSize = MappedBuffer.getVarTypeSize(type);
+        const varTypeSize = getVarTypeSize(type);
         if (!varTypeSize || this._buffer.length < varTypeSize)
             return null;
         type = this.getInternalType(type);
@@ -129,7 +129,7 @@ class BufferReader {
     readArray(template) {
         const arr = [];
         for (let i = 0; i < template.size; i++) {
-            if (typeof template.type === "string") {
+            if (typeof template.type === 'string') {
                 if (template.type === VarType.bool) {
                     arr.push(this.readBool(template.type));
                 }
@@ -137,7 +137,7 @@ class BufferReader {
                     arr.push(this.readNumber(template.type));
                 }
             }
-            if (typeof template.type === "object") {
+            if (typeof template.type === 'object') {
                 const collection = template.type;
                 if (collection.type === CollectionType.Struct) {
                     arr.push(this.readStruct(collection.data));
@@ -153,7 +153,7 @@ class BufferReader {
         const struct = {};
         for (const key in template) {
             const varType = template[key];
-            if (typeof varType === "string") {
+            if (typeof varType === 'string') {
                 if (varType === VarType.bool) {
                     struct[key] = this.readBool(varType);
                 }
@@ -161,7 +161,7 @@ class BufferReader {
                     struct[key] = this.readNumber(varType);
                 }
             }
-            if (typeof varType === "object") {
+            if (typeof varType === 'object') {
                 const collection = varType;
                 if (collection.type === CollectionType.Struct) {
                     struct[key] = this.readStruct(collection.data);
@@ -174,7 +174,7 @@ class BufferReader {
         return struct;
     }
     getInternalType(type) {
-        const varTypeSize = MappedBuffer.getVarTypeSize(type);
+        const varTypeSize = getVarTypeSize(type);
         if (type === VarType.char)
             type = VarType.int8_t;
         if (type === VarType.char16_t)

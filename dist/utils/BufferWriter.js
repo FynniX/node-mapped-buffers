@@ -3,7 +3,7 @@
 var CollectionType = require('../enums/CollectionType.js');
 var Endian = require('../enums/Endian.js');
 var VarType = require('../enums/VarType.js');
-var index = require('../index.js');
+var TypeSizes = require('./TypeSizes.js');
 
 class BufferWriter {
     constructor(endian = Endian.Endian.Little) {
@@ -11,7 +11,7 @@ class BufferWriter {
         this._endian = endian;
     }
     writeNumber(type, value) {
-        const varTypeSize = index.MappedBuffer.getVarTypeSize(type);
+        const varTypeSize = TypeSizes.getVarTypeSize(type);
         if (!varTypeSize)
             return;
         type = this.getInternalType(type);
@@ -75,7 +75,7 @@ class BufferWriter {
         this._buffer = Buffer.concat([this._buffer, tmpBuffer]);
     }
     writeBool(type, value) {
-        const varTypeSize = index.MappedBuffer.getVarTypeSize(type);
+        const varTypeSize = TypeSizes.getVarTypeSize(type);
         if (!varTypeSize)
             return;
         type = this.getInternalType(type);
@@ -140,7 +140,7 @@ class BufferWriter {
     }
     writeArray(template, value) {
         for (let i = 0; i < template.size; i++) {
-            if (typeof template.type === "string") {
+            if (typeof template.type === 'string') {
                 if (template.type === VarType.VarType.bool) {
                     this.writeBool(template.type, value[i]);
                 }
@@ -148,7 +148,7 @@ class BufferWriter {
                     this.writeNumber(template.type, value[i]);
                 }
             }
-            if (typeof template.type === "object") {
+            if (typeof template.type === 'object') {
                 const collection = template.type;
                 if (collection.type === CollectionType.CollectionType.Struct) {
                     this.writeStruct(collection.data, value[i]);
@@ -162,7 +162,7 @@ class BufferWriter {
     writeStruct(template, value) {
         for (const key in template) {
             const varType = template[key];
-            if (typeof varType === "string") {
+            if (typeof varType === 'string') {
                 if (varType === VarType.VarType.bool) {
                     this.writeBool(varType, value[key]);
                 }
@@ -170,7 +170,7 @@ class BufferWriter {
                     this.writeNumber(varType, value[key]);
                 }
             }
-            if (typeof varType === "object") {
+            if (typeof varType === 'object') {
                 const collection = varType;
                 if (collection.type === CollectionType.CollectionType.Struct) {
                     this.writeStruct(collection.data, value[key]);
@@ -185,7 +185,7 @@ class BufferWriter {
         return this._buffer;
     }
     getInternalType(type) {
-        const varTypeSize = index.MappedBuffer.getVarTypeSize(type);
+        const varTypeSize = TypeSizes.getVarTypeSize(type);
         if (type === VarType.VarType.char)
             type = VarType.VarType.int8_t;
         if (type === VarType.VarType.char16_t)

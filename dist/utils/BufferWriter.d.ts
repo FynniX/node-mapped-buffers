@@ -1,9 +1,9 @@
 /// <reference types="node" />
-import { Endian } from "../enums/Endian";
-import { VarType } from "../enums/VarType";
-import { ArrayCollection } from "../interfaces/ArrayCollection";
-import { Struct } from "../interfaces/Struct";
-import { StructCollection } from "../interfaces/StructCollection";
+import { Endian } from '../enums/Endian';
+import { VarType } from '../enums/VarType';
+import { ArrayCollection } from '../interfaces/ArrayCollection';
+import { Struct } from '../interfaces/Struct';
+import { StructCollection } from '../interfaces/StructCollection';
 export declare class BufferWriter {
     private _buffer;
     private readonly _endian;
