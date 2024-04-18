@@ -44,8 +44,8 @@
   },
   "lint-staged": {
     "lib/**/*": [
-      "pnpm exec eslint --fix",
-      "pnpm exec prettier --write --ignore-unknown"
+      "eslint --fix",
+      "prettier --write --ignore-unknown"
     ]
   },
   "devDependencies": {
