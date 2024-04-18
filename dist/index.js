@@ -42,10 +42,10 @@ class MappedBuffer {
         let size = 0;
         for (const key in struct) {
             const varType = struct[key];
-            if (typeof varType === "string") {
+            if (typeof varType === 'string') {
                 size += (_a = MappedBuffer.getVarTypeSize(varType)) !== null && _a !== void 0 ? _a : 0;
             }
-            if (typeof varType === "object") {
+            if (typeof varType === 'object') {
                 const collection = varType;
                 if (collection.type === CollectionType.CollectionType.Struct) {
                     size += MappedBuffer.calculateStructSize(collection.data);
@@ -60,10 +60,10 @@ class MappedBuffer {
     static calculateArraySize(arr) {
         var _a;
         let size = 0;
-        if (typeof arr.type === "string") {
+        if (typeof arr.type === 'string') {
             size += ((_a = MappedBuffer.getVarTypeSize(arr.type)) !== null && _a !== void 0 ? _a : 0) * arr.size;
         }
-        if (typeof arr.type === "object") {
+        if (typeof arr.type === 'object') {
             const arrayType = arr.type;
             if (arrayType.type === CollectionType.CollectionType.Struct) {
                 size += MappedBuffer.calculateStructSize(arrayType.data) * arr.size;
