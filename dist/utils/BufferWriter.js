@@ -11,13 +11,10 @@ class BufferWriter {
         this._endian = endian;
     }
     writeNumber(type, value) {
-        // Check weather the type is supported
         const varTypeSize = index.MappedBuffer.getVarTypeSize(type);
         if (!varTypeSize)
             return;
-        // Get internal type
         type = this.getInternalType(type);
-        // Write temp buffer
         const tmpBuffer = Buffer.alloc(varTypeSize);
         switch (type) {
             case VarType.VarType.int8_t:
@@ -75,17 +72,13 @@ class BufferWriter {
                     tmpBuffer.writeDoubleLE(value);
                 break;
         }
-        // Combine the buffers
         this._buffer = Buffer.concat([this._buffer, tmpBuffer]);
     }
     writeBool(type, value) {
-        // Check weather the type is supported
         const varTypeSize = index.MappedBuffer.getVarTypeSize(type);
         if (!varTypeSize)
             return;
-        // Get internal type
         type = this.getInternalType(type);
-        // Write temp buffer
         const tmpBuffer = Buffer.alloc(varTypeSize);
         switch (type) {
             case VarType.VarType.int8_t:
@@ -143,14 +136,11 @@ class BufferWriter {
                     tmpBuffer.writeDoubleLE(value ? 1 : 0);
                 break;
         }
-        // Combine the buffers
         this._buffer = Buffer.concat([this._buffer, tmpBuffer]);
     }
     writeArray(template, value) {
         for (let i = 0; i < template.size; i++) {
-            // Regular type
             if (typeof template.type === "string") {
-                // Boolean type or number type
                 if (template.type === VarType.VarType.bool) {
                     this.writeBool(template.type, value[i]);
                 }
@@ -158,14 +148,11 @@ class BufferWriter {
                     this.writeNumber(template.type, value[i]);
                 }
             }
-            // Collection type
             if (typeof template.type === "object") {
                 const collection = template.type;
-                // Struct collection
                 if (collection.type === CollectionType.CollectionType.Struct) {
                     this.writeStruct(collection.data, value[i]);
                 }
-                // Array collection
                 if (collection.type === CollectionType.CollectionType.Array) {
                     this.writeArray(collection.data, value[i]);
                 }
@@ -175,9 +162,7 @@ class BufferWriter {
     writeStruct(template, value) {
         for (const key in template) {
             const varType = template[key];
-            // Regular type
             if (typeof varType === "string") {
-                // Boolean type or number type
                 if (varType === VarType.VarType.bool) {
                     this.writeBool(varType, value[key]);
                 }
@@ -185,14 +170,11 @@ class BufferWriter {
                     this.writeNumber(varType, value[key]);
                 }
             }
-            // Collection type
             if (typeof varType === "object") {
                 const collection = varType;
-                // Struct collection
                 if (collection.type === CollectionType.CollectionType.Struct) {
                     this.writeStruct(collection.data, value[key]);
                 }
-                // Array collection
                 if (collection.type === CollectionType.CollectionType.Array) {
                     this.writeArray(collection.data, value[key]);
                 }
@@ -204,7 +186,6 @@ class BufferWriter {
     }
     getInternalType(type) {
         const varTypeSize = index.MappedBuffer.getVarTypeSize(type);
-        // Change the type if necessary
         if (type === VarType.VarType.char)
             type = VarType.VarType.int8_t;
         if (type === VarType.VarType.char16_t)

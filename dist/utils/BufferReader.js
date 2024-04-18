@@ -11,13 +11,10 @@ class BufferReader {
         this._endian = endian;
     }
     readNumber(type) {
-        // Check if the buffer has enough bytes
         const varTypeSize = index.MappedBuffer.getVarTypeSize(type);
         if (!varTypeSize || this._buffer.length < varTypeSize)
             return null;
-        // Get internal type
         type = this.getInternalType(type);
-        // Read value
         let value = null;
         switch (type) {
             case VarType.VarType.int8_t:
@@ -75,18 +72,14 @@ class BufferReader {
                     value = this._buffer.readDoubleLE(0);
                 break;
         }
-        // Remove the bytes from the buffer
         this._buffer = this._buffer.subarray(varTypeSize);
         return value;
     }
     readBool(type) {
-        // Check if the buffer has enough bytes
         const varTypeSize = index.MappedBuffer.getVarTypeSize(type);
         if (!varTypeSize || this._buffer.length < varTypeSize)
             return null;
-        // Get internal type
         type = this.getInternalType(type);
-        // Read value
         let value = null;
         switch (type) {
             case VarType.VarType.int8_t:
@@ -132,16 +125,13 @@ class BufferReader {
                     value = Number(this._buffer.readBigUInt64LE(0)) === 1;
                 break;
         }
-        // Remove the bytes from the buffer
         this._buffer = this._buffer.subarray(varTypeSize);
         return value;
     }
     readArray(template) {
         const arr = [];
         for (let i = 0; i < template.size; i++) {
-            // Regular type
             if (typeof template.type === "string") {
-                // Boolean type or number type
                 if (template.type === VarType.VarType.bool) {
                     arr.push(this.readBool(template.type));
                 }
@@ -149,14 +139,11 @@ class BufferReader {
                     arr.push(this.readNumber(template.type));
                 }
             }
-            // Collection type
             if (typeof template.type === "object") {
                 const collection = template.type;
-                // Struct collection
                 if (collection.type === CollectionType.CollectionType.Struct) {
                     arr.push(this.readStruct(collection.data));
                 }
-                // Array collection
                 if (collection.type === CollectionType.CollectionType.Array) {
                     arr.push(this.readArray(collection.data));
                 }
@@ -168,9 +155,7 @@ class BufferReader {
         const struct = {};
         for (const key in template) {
             const varType = template[key];
-            // Regular type
             if (typeof varType === "string") {
-                // Boolean type or number type
                 if (varType === VarType.VarType.bool) {
                     struct[key] = this.readBool(varType);
                 }
@@ -178,14 +163,11 @@ class BufferReader {
                     struct[key] = this.readNumber(varType);
                 }
             }
-            // Collection type
             if (typeof varType === "object") {
                 const collection = varType;
-                // Struct collection
                 if (collection.type === CollectionType.CollectionType.Struct) {
                     struct[key] = this.readStruct(collection.data);
                 }
-                // Array collection
                 if (collection.type === CollectionType.CollectionType.Array) {
                     struct[key] = this.readArray(collection.data);
                 }
@@ -195,7 +177,6 @@ class BufferReader {
     }
     getInternalType(type) {
         const varTypeSize = index.MappedBuffer.getVarTypeSize(type);
-        // Change the type if necessary
         if (type === VarType.VarType.char)
             type = VarType.VarType.int8_t;
         if (type === VarType.VarType.char16_t)

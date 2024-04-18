@@ -2,24 +2,9 @@ import { CollectionType } from './enums/CollectionType.mjs';
 import { BufferReader } from './utils/BufferReader.mjs';
 import { BufferWriter } from './utils/BufferWriter.mjs';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const addon = require('../build/Release/node-mapped-buffer');
-/**
- * @class
- * @name MappedBuffer
- * @description A memory mapped buffer.
- */
 class MappedBuffer {
-    /**
-     * @constructor
-     * @param bufferPath The path of the buffer.
-     * @param struct The struct of the buffer.
-     */
     constructor(bufferPath, struct) {
-        /**
-         * @name bufferSize
-         * @description The size of the buffer in bytes.
-         */
         this.bufferSize = 0;
         this._template = struct;
         this.bufferPath = bufferPath;
@@ -55,18 +40,14 @@ class MappedBuffer {
         let size = 0;
         for (const key in struct) {
             const varType = struct[key];
-            // Regular type
             if (typeof varType === "string") {
                 size += (_a = MappedBuffer.getVarTypeSize(varType)) !== null && _a !== void 0 ? _a : 0;
             }
-            // Collection type
             if (typeof varType === "object") {
                 const collection = varType;
-                // Struct collection
                 if (collection.type === CollectionType.Struct) {
                     size += MappedBuffer.calculateStructSize(collection.data);
                 }
-                // Array collection
                 if (collection.type === CollectionType.Array) {
                     size += MappedBuffer.calculateArraySize(collection.data);
                 }
@@ -77,18 +58,14 @@ class MappedBuffer {
     static calculateArraySize(arr) {
         var _a;
         let size = 0;
-        // Regular type
         if (typeof arr.type === "string") {
             size += ((_a = MappedBuffer.getVarTypeSize(arr.type)) !== null && _a !== void 0 ? _a : 0) * arr.size;
         }
-        // Collection type
         if (typeof arr.type === "object") {
             const arrayType = arr.type;
-            // Struct collection
             if (arrayType.type === CollectionType.Struct) {
                 size += MappedBuffer.calculateStructSize(arrayType.data) * arr.size;
             }
-            // Array collection
             if (arrayType.type === CollectionType.Array) {
                 size += MappedBuffer.calculateArraySize(arrayType.data) * arr.size;
             }
