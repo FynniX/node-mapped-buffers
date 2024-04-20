@@ -1,6 +1,6 @@
-import { StructCollection } from "../interfaces/StructCollection";
-import { VarType } from "../enums/VarType";
-import { Collection } from "../interfaces/Collection";
+import { StructCollection } from '../interfaces/StructCollection';
+import { VarType } from '../enums/VarType';
+import { Collection } from '../interfaces/Collection';
 export declare class StructBuilder {
     private _struct;
     constructor(struct?: StructCollection);

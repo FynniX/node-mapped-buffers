@@ -1,8 +1,14 @@
 export { MappedBuffer } from '../index.mjs';
-export { Endian } from '../enums/Endian.mjs';
+export { DeclarationType } from '../enums/DeclarationType.mjs';
 export { CollectionType } from '../enums/CollectionType.mjs';
+export { PrimitiveType } from '../enums/PrimitiveType.mjs';
+export { Endian } from '../enums/Endian.mjs';
 export { VarType } from '../enums/VarType.mjs';
 export { BufferReader } from '../utils/BufferReader.mjs';
-export { StructBuilder } from '../utils/StructBuilder.mjs';
 export { BufferWriter } from '../utils/BufferWriter.mjs';
+export { SchemaReader } from '../utils/SchemaReader.mjs';
+export { StructBuilder } from '../utils/StructBuilder.mjs';
 export { calculateArraySize, calculateStructSize, getVarTypeSize } from '../utils/TypeSizes.mjs';
+import '../utils/parser/SchemaLexer.mjs';
+export { ArrayContext, DimensionContext, PrimitiveTypeContext, SchemaContext, StructContext, TypeContext, UserTypeContext } from '../utils/parser/SchemaParser.mjs';
+import 'antlr4';
