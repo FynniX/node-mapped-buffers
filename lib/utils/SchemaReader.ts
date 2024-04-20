@@ -15,7 +15,7 @@ import { VarType } from '../enums/VarType'
 import { StructCollection } from '../interfaces/StructCollection'
 
 interface StructResult {
-  path: string
+  path?: string
   template: StructCollection
 }
 
@@ -31,7 +31,7 @@ export class SchemaReader {
   private visitStruct(ctx: StructContext) {
     if (!ctx) return
     // get path
-    const path = ctx.pathCommand().STRING().getText().replaceAll('"', '').replaceAll("'", '')
+    const path = ctx.pathCommand()?.STRING().getText().replaceAll('"', '').replaceAll("'", '') ?? undefined
     // create builder for struct
     const builder = new StructBuilder()
     // visit all structs
