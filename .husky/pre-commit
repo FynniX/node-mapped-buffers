@@ -1,5 +1,5 @@
-pnpm exec lint-staged
 pnpm run docs
 git add docs
 pnpm run build:lib
 git add dist
+pnpm exec lint-staged

@@ -38,8 +38,8 @@
     "test": "node --napi-modules ./test/test_schema.js && node --napi-modules ./test/test_binding.js",
     "lint": "pnpm exec eslint lib/ --ext .ts",
     "lint:fix": "pnpm exec eslint lib/ --ext .ts --fix",
-    "format": "pnpm exec prettier . --check --ignore-unknown",
-    "format:fix": "pnpm exec prettier . --write --ignore-unknown",
+    "format": "pnpm exec prettier lib/ --check --ignore-unknown",
+    "format:fix": "pnpm exec prettier lib/ --write --ignore-unknown",
     "docs": "pnpm exec rimraf docs && pnpm exec typedoc",
     "prepare": "husky"
   },

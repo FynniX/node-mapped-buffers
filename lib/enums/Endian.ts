@@ -1,4 +1,4 @@
 export enum Endian {
-    Big = "BE",
-    Little = "LE"
+  Big = 'BE',
+  Little = 'LE'
 }
