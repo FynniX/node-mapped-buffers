@@ -28,11 +28,13 @@
     "url": "https://github.com/FynniX/node-mapped-buffer/issues"
   },
   "scripts": {
-    "install": "pnpm run build:addon",
+    "install": "prebuild-install || pnpm run build:addon",
     "build:lib": "pnpm exec rimraf dist && pnpm exec rollup -c",
     "build:addon": "pnpm exec node-gyp rebuild",
     "build:parser": "pnpm exec rimraf lib/utils/parser && antlr4 -Dlanguage=TypeScript Schema.g4 -visitor -o lib/utils/parser",
     "build": "pnpm run build:addon && pnpm run build:lib&& pnpm run build:parser",
+    "prebuild:build": "prebuild -t 3 -r napi -a x64 --strip",
+    "prebuild:upload": "node ./scripts/prebuild-upload.js",
     "pretest": "pnpm run build",
     "test": "node --napi-modules ./test/test_schema.js && node --napi-modules ./test/test_binding.js",
     "lint": "pnpm exec eslint lib/ --ext .ts",
@@ -60,6 +62,7 @@
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
+    "prebuild-install": "^7.1.2",
     "prettier": "^3.2.5",
     "rimraf": "^5.0.5",
     "rollup": "^4.14.3",
@@ -70,6 +73,7 @@
   },
   "dependencies": {
     "antlr4": "4.13.1-patch-1",
-    "node-addon-api": "^8.0.0"
+    "node-addon-api": "^8.0.0",
+    "prebuild": "^13.0.0"
   }
 }
