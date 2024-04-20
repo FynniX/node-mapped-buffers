@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  push:
+    tags: ['*']
+
+jobs:
+  prebuild:
+    runs-on: windows-2019
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Setup environment
+        run: pnpm install
+
+      - name: Prebuild addon
+        run: pnpm run prebuild:build
+
+      - name: Prebuild upload
+        run: pnpm run prebuild:upload
+        env:
+          GITHUB_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+  publish:
+    runs-on: windows-2019
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Setup environment
+        run: pnpm install
+
+      - name: Publish package
+        uses: JS-DevTools/npm-publish@v2
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
