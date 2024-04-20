@@ -1,4 +1,3 @@
-import { writeFileSync } from 'fs'
 import { StructCollection } from '../interfaces/StructCollection'
 import { VarType } from '../enums/VarType'
 import { CollectionType } from '../enums/CollectionType'
@@ -30,8 +29,8 @@ export class StructBuilder {
     return this._struct
   }
 
-  static write(path: string, struct: StructCollection) {
-    writeFileSync(path, JSON.stringify(struct, null, 2))
+  static toString(name: string, struct: StructCollection): string {
+    return `export const ${name} = ${JSON.stringify(struct, null, 2)}`
   }
 
   static createArray(type: VarType | Collection, size: number): Collection {

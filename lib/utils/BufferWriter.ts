@@ -5,7 +5,7 @@ import { ArrayCollection } from '../interfaces/ArrayCollection'
 import { Collection } from '../interfaces/Collection'
 import { Struct } from '../interfaces/Struct'
 import { StructCollection } from '../interfaces/StructCollection'
-import { getVarTypeSize } from './TypeSizes'
+import { getInternalType, getVarTypeSize } from './TypeSizes'
 
 /**
  * @class
@@ -49,7 +49,7 @@ export class BufferWriter {
     if (!varTypeSize) return
 
     // Get internal type
-    type = this.getInternalType(type)
+    type = getInternalType(type)
 
     // Write temp buffer
     const tmpBuffer = Buffer.alloc(varTypeSize)
@@ -113,7 +113,7 @@ export class BufferWriter {
     if (!varTypeSize) return
 
     // Get internal type
-    type = this.getInternalType(type)
+    type = getInternalType(type)
 
     // Write temp buffer
     const tmpBuffer = Buffer.alloc(varTypeSize)
@@ -245,39 +245,5 @@ export class BufferWriter {
    */
   public getBuffer(): Buffer {
     return this._buffer
-  }
-
-  /**
-   * A description of the entire function.
-   * @private
-   * @param {VarType} type - The variable type to get the internal type for.
-   * @return {VarType} The internal type of the given variable type.
-   */
-  private getInternalType(type: VarType): VarType {
-    const varTypeSize = getVarTypeSize(type)
-
-    // Change the type if necessary
-    if (type === VarType.char) type = VarType.int8_t
-    if (type === VarType.char16_t) type = VarType.int16_t
-    if (type === VarType.char32_t) type = VarType.int32_t
-    if (type === VarType.wchar_t && varTypeSize == 2) type = VarType.int16_t
-    if (type === VarType.wchar_t && varTypeSize == 4) type = VarType.int32_t
-    if (type === VarType.unsigned_char) type = VarType.uint8_t
-
-    if (type === VarType.short_int) type = VarType.int16_t
-    if (type === VarType.int) type = VarType.int32_t
-    if (type === VarType.long_int && varTypeSize == 4) type = VarType.int32_t
-    if (type === VarType.long_int && varTypeSize == 8) type = VarType.int64_t
-    if (type === VarType.long_long_int) type = VarType.int64_t
-
-    if (type === VarType.unsigned_short_int) type = VarType.uint16_t
-    if (type === VarType.unsigned_int) type = VarType.uint32_t
-    if (type === VarType.unsigned_long_int && varTypeSize == 4) type = VarType.uint32_t
-    if (type === VarType.unsigned_long_int && varTypeSize == 8) type = VarType.uint64_t
-    if (type === VarType.unsigned_long_long_int) type = VarType.uint64_t
-
-    if (type === VarType.bool) type = VarType.int8_t
-
-    return type
   }
 }
