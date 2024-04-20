@@ -32,7 +32,7 @@
     "build:lib": "pnpm exec rimraf dist && pnpm exec rollup -c",
     "build:addon": "pnpm exec node-gyp rebuild",
     "build:parser": "pnpm exec rimraf lib/utils/parser && antlr4 -Dlanguage=TypeScript Schema.g4 -visitor -o lib/utils/parser",
-    "build": "pnpm run build:addon && pnpm run build:lib&& pnpm run build:parser",
+    "build": "pnpm run build:addon && pnpm run build:parser && pnpm run build:lib",
     "prebuild:build": "prebuild -t 3 -r napi -a x64 --strip",
     "prebuild:upload": "node ./scripts/prebuild-upload.js",
     "pretest": "pnpm run build",
