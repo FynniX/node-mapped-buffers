@@ -1,23 +1,27 @@
 'use strict';
 
 var index = require('../index.js');
+var PrimitiveType = require('../enums/PrimitiveType.js');
 var CollectionType = require('../enums/CollectionType.js');
 var DeclarationType = require('../enums/DeclarationType.js');
 var VarType = require('../enums/VarType.js');
-var PrimitiveType = require('../enums/PrimitiveType.js');
 var Endian = require('../enums/Endian.js');
 var BufferReader = require('../utils/BufferReader.js');
 var BufferWriter = require('../utils/BufferWriter.js');
-var SchemaReader = require('../utils/SchemaReader.js');
 var StructBuilder = require('../utils/StructBuilder.js');
+var SchemaReader = require('../utils/SchemaReader.js');
 var TypeSizes = require('../utils/TypeSizes.js');
-require('../utils/parser/SchemaLexer.js');
 require('antlr4');
 var SchemaParser = require('../utils/parser/SchemaParser.js');
+require('../utils/parser/SchemaLexer.js');
 
 
 
 exports.MappedBuffer = index.MappedBuffer;
+Object.defineProperty(exports, "PrimitiveType", {
+	enumerable: true,
+	get: function () { return PrimitiveType.PrimitiveType; }
+});
 Object.defineProperty(exports, "CollectionType", {
 	enumerable: true,
 	get: function () { return CollectionType.CollectionType; }
@@ -30,18 +34,14 @@ Object.defineProperty(exports, "VarType", {
 	enumerable: true,
 	get: function () { return VarType.VarType; }
 });
-Object.defineProperty(exports, "PrimitiveType", {
-	enumerable: true,
-	get: function () { return PrimitiveType.PrimitiveType; }
-});
 Object.defineProperty(exports, "Endian", {
 	enumerable: true,
 	get: function () { return Endian.Endian; }
 });
 exports.BufferReader = BufferReader.BufferReader;
 exports.BufferWriter = BufferWriter.BufferWriter;
-exports.SchemaReader = SchemaReader.SchemaReader;
 exports.StructBuilder = StructBuilder.StructBuilder;
+exports.SchemaReader = SchemaReader.SchemaReader;
 exports.calculateArraySize = TypeSizes.calculateArraySize;
 exports.calculateStructSize = TypeSizes.calculateStructSize;
 exports.getVarTypeSize = TypeSizes.getVarTypeSize;
