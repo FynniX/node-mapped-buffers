@@ -48,5 +48,5 @@ codealike.json
 # Antlr
 .antlr/
 
-# Rollup folders
-dist/_virtual/
+# Dist folder
+dist/
