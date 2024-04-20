@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "node-mapped-buffer",
   "description": "A implementation of Memory Mapped Buffer for Node.js.",
   "author": "Fynn Haupt",
