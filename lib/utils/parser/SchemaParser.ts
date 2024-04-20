@@ -52,26 +52,32 @@ export default class SchemaParser extends Parser {
   public static readonly T__18 = 19
   public static readonly T__19 = 20
   public static readonly T__20 = 21
-  public static readonly SEMICOLON = 22
-  public static readonly CURVED_BRACKET_OPEN = 23
-  public static readonly CURVED_BRACKET_CLOSE = 24
-  public static readonly BRACKET_OPEN = 25
-  public static readonly BRACKET_CLOSE = 26
-  public static readonly NAME = 27
-  public static readonly NUMBER = 28
-  public static readonly NEWLINE = 29
-  public static readonly WHITESPACE = 30
+  public static readonly T__21 = 22
+  public static readonly SEMICOLON = 23
+  public static readonly CURVED_BRACKET_OPEN = 24
+  public static readonly CURVED_BRACKET_CLOSE = 25
+  public static readonly BRACKET_OPEN = 26
+  public static readonly BRACKET_CLOSE = 27
+  public static readonly DELIMITER = 28
+  public static readonly AT = 29
+  public static readonly STRING = 30
+  public static readonly NAME = 31
+  public static readonly NUMBER = 32
+  public static readonly NEWLINE = 33
+  public static readonly WHITESPACE = 34
   public static readonly EOF = Token.EOF
   public static readonly RULE_schema = 0
   public static readonly RULE_struct = 1
-  public static readonly RULE_type = 2
-  public static readonly RULE_array = 3
-  public static readonly RULE_dimension = 4
-  public static readonly RULE_primitiveType = 5
-  public static readonly RULE_userType = 6
+  public static readonly RULE_pathCommand = 2
+  public static readonly RULE_type = 3
+  public static readonly RULE_array = 4
+  public static readonly RULE_dimension = 5
+  public static readonly RULE_primitiveType = 6
+  public static readonly RULE_userType = 7
   public static readonly literalNames: (string | null)[] = [
     null,
     "'struct'",
+    "'PATH'",
     "'char'",
     "'char16_t'",
     "'char32_t'",
@@ -97,6 +103,9 @@ export default class SchemaParser extends Parser {
     "'}'",
     "'['",
     "']'",
+    null,
+    "'@'",
+    null,
     null,
     null,
     null,
@@ -125,11 +134,15 @@ export default class SchemaParser extends Parser {
     null,
     null,
     null,
+    null,
     'SEMICOLON',
     'CURVED_BRACKET_OPEN',
     'CURVED_BRACKET_CLOSE',
     'BRACKET_OPEN',
     'BRACKET_CLOSE',
+    'DELIMITER',
+    'AT',
+    'STRING',
     'NAME',
     'NUMBER',
     'NEWLINE',
@@ -139,6 +152,7 @@ export default class SchemaParser extends Parser {
   public static readonly ruleNames: string[] = [
     'schema',
     'struct',
+    'pathCommand',
     'type',
     'array',
     'dimension',
@@ -182,21 +196,21 @@ export default class SchemaParser extends Parser {
     try {
       this.enterOuterAlt(localctx, 1)
       {
-        this.state = 15
+        this.state = 17
         this._errHandler.sync(this)
         _la = this._input.LA(1)
         do {
           {
             {
-              this.state = 14
+              this.state = 16
               this.struct()
             }
           }
-          this.state = 17
+          this.state = 19
           this._errHandler.sync(this)
           _la = this._input.LA(1)
-        } while (_la === 1)
-        this.state = 19
+        } while (_la === 1 || _la === 29)
+        this.state = 21
         this.match(SchemaParser.EOF)
       }
     } catch (re) {
@@ -220,28 +234,65 @@ export default class SchemaParser extends Parser {
     try {
       this.enterOuterAlt(localctx, 1)
       {
-        this.state = 21
+        this.state = 24
+        this._errHandler.sync(this)
+        _la = this._input.LA(1)
+        if (_la === 29) {
+          {
+            this.state = 23
+            this.pathCommand()
+          }
+        }
+
+        this.state = 26
         this.match(SchemaParser.T__0)
-        this.state = 22
+        this.state = 27
         this.match(SchemaParser.NAME)
-        this.state = 23
+        this.state = 28
         this.match(SchemaParser.CURVED_BRACKET_OPEN)
-        this.state = 25
+        this.state = 30
         this._errHandler.sync(this)
         _la = this._input.LA(1)
         do {
           {
             {
-              this.state = 24
+              this.state = 29
               this.type_()
             }
           }
-          this.state = 27
+          this.state = 32
           this._errHandler.sync(this)
           _la = this._input.LA(1)
-        } while ((_la & ~0x1f) === 0 && ((1 << _la) & 138412028) !== 0)
-        this.state = 29
+        } while ((_la & ~0x1f) === 0 && ((1 << _la) & 2155872248) !== 0)
+        this.state = 34
         this.match(SchemaParser.CURVED_BRACKET_CLOSE)
+      }
+    } catch (re) {
+      if (re instanceof RecognitionException) {
+        localctx.exception = re
+        this._errHandler.reportError(this, re)
+        this._errHandler.recover(this, re)
+      } else {
+        throw re
+      }
+    } finally {
+      this.exitRule()
+    }
+    return localctx
+  }
+  // @RuleVersion(0)
+  public pathCommand(): PathCommandContext {
+    let localctx: PathCommandContext = new PathCommandContext(this, this._ctx, this.state)
+    this.enterRule(localctx, 4, SchemaParser.RULE_pathCommand)
+    try {
+      this.enterOuterAlt(localctx, 1)
+      {
+        this.state = 36
+        this.match(SchemaParser.AT)
+        this.state = 37
+        this.match(SchemaParser.T__1)
+        this.state = 38
+        this.match(SchemaParser.STRING)
       }
     } catch (re) {
       if (re instanceof RecognitionException) {
@@ -259,13 +310,12 @@ export default class SchemaParser extends Parser {
   // @RuleVersion(0)
   public type_(): TypeContext {
     let localctx: TypeContext = new TypeContext(this, this._ctx, this.state)
-    this.enterRule(localctx, 4, SchemaParser.RULE_type)
+    this.enterRule(localctx, 6, SchemaParser.RULE_type)
     let _la: number
     try {
-      this.state = 49
+      this.state = 58
       this._errHandler.sync(this)
       switch (this._input.LA(1)) {
-        case 2:
         case 3:
         case 4:
         case 5:
@@ -285,56 +335,57 @@ export default class SchemaParser extends Parser {
         case 19:
         case 20:
         case 21:
+        case 22:
           this.enterOuterAlt(localctx, 1)
           {
-            this.state = 32
+            this.state = 41
             this._errHandler.sync(this)
             _la = this._input.LA(1)
             do {
               {
                 {
-                  this.state = 31
+                  this.state = 40
                   this.primitiveType()
                 }
               }
-              this.state = 34
+              this.state = 43
               this._errHandler.sync(this)
               _la = this._input.LA(1)
-            } while ((_la & ~0x1f) === 0 && ((1 << _la) & 4194300) !== 0)
-            this.state = 36
+            } while ((_la & ~0x1f) === 0 && ((1 << _la) & 8388600) !== 0)
+            this.state = 45
             this.match(SchemaParser.NAME)
-            this.state = 38
+            this.state = 47
             this._errHandler.sync(this)
             _la = this._input.LA(1)
-            if (_la === 25) {
+            if (_la === 26) {
               {
-                this.state = 37
+                this.state = 46
                 this.array()
               }
             }
 
-            this.state = 40
+            this.state = 49
             this.match(SchemaParser.SEMICOLON)
           }
           break
-        case 27:
+        case 31:
           this.enterOuterAlt(localctx, 2)
           {
-            this.state = 42
+            this.state = 51
             this.userType()
-            this.state = 43
+            this.state = 52
             this.match(SchemaParser.NAME)
-            this.state = 45
+            this.state = 54
             this._errHandler.sync(this)
             _la = this._input.LA(1)
-            if (_la === 25) {
+            if (_la === 26) {
               {
-                this.state = 44
+                this.state = 53
                 this.array()
               }
             }
 
-            this.state = 47
+            this.state = 56
             this.match(SchemaParser.SEMICOLON)
           }
           break
@@ -357,25 +408,25 @@ export default class SchemaParser extends Parser {
   // @RuleVersion(0)
   public array(): ArrayContext {
     let localctx: ArrayContext = new ArrayContext(this, this._ctx, this.state)
-    this.enterRule(localctx, 6, SchemaParser.RULE_array)
+    this.enterRule(localctx, 8, SchemaParser.RULE_array)
     let _la: number
     try {
       this.enterOuterAlt(localctx, 1)
       {
-        this.state = 52
+        this.state = 61
         this._errHandler.sync(this)
         _la = this._input.LA(1)
         do {
           {
             {
-              this.state = 51
+              this.state = 60
               this.dimension()
             }
           }
-          this.state = 54
+          this.state = 63
           this._errHandler.sync(this)
           _la = this._input.LA(1)
-        } while (_la === 25)
+        } while (_la === 26)
       }
     } catch (re) {
       if (re instanceof RecognitionException) {
@@ -393,15 +444,15 @@ export default class SchemaParser extends Parser {
   // @RuleVersion(0)
   public dimension(): DimensionContext {
     let localctx: DimensionContext = new DimensionContext(this, this._ctx, this.state)
-    this.enterRule(localctx, 8, SchemaParser.RULE_dimension)
+    this.enterRule(localctx, 10, SchemaParser.RULE_dimension)
     try {
       this.enterOuterAlt(localctx, 1)
       {
-        this.state = 56
+        this.state = 65
         this.match(SchemaParser.BRACKET_OPEN)
-        this.state = 57
+        this.state = 66
         this.match(SchemaParser.NUMBER)
-        this.state = 58
+        this.state = 67
         this.match(SchemaParser.BRACKET_CLOSE)
       }
     } catch (re) {
@@ -420,14 +471,14 @@ export default class SchemaParser extends Parser {
   // @RuleVersion(0)
   public primitiveType(): PrimitiveTypeContext {
     let localctx: PrimitiveTypeContext = new PrimitiveTypeContext(this, this._ctx, this.state)
-    this.enterRule(localctx, 10, SchemaParser.RULE_primitiveType)
+    this.enterRule(localctx, 12, SchemaParser.RULE_primitiveType)
     let _la: number
     try {
       this.enterOuterAlt(localctx, 1)
       {
-        this.state = 60
+        this.state = 69
         _la = this._input.LA(1)
-        if (!((_la & ~0x1f) === 0 && ((1 << _la) & 4194300) !== 0)) {
+        if (!((_la & ~0x1f) === 0 && ((1 << _la) & 8388600) !== 0)) {
           this._errHandler.recoverInline(this)
         } else {
           this._errHandler.reportMatch(this)
@@ -450,11 +501,11 @@ export default class SchemaParser extends Parser {
   // @RuleVersion(0)
   public userType(): UserTypeContext {
     let localctx: UserTypeContext = new UserTypeContext(this, this._ctx, this.state)
-    this.enterRule(localctx, 12, SchemaParser.RULE_userType)
+    this.enterRule(localctx, 14, SchemaParser.RULE_userType)
     try {
       this.enterOuterAlt(localctx, 1)
       {
-        this.state = 62
+        this.state = 71
         this.match(SchemaParser.NAME)
       }
     } catch (re) {
@@ -472,22 +523,24 @@ export default class SchemaParser extends Parser {
   }
 
   public static readonly _serializedATN: number[] = [
-    4, 1, 30, 65, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7, 4, 2, 5, 7, 5, 2, 6, 7, 6, 1, 0, 4, 0, 16, 8,
-    0, 11, 0, 12, 0, 17, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 26, 8, 1, 11, 1, 12, 1, 27, 1, 1, 1, 1, 1, 2, 4, 2,
-    33, 8, 2, 11, 2, 12, 2, 34, 1, 2, 1, 2, 3, 2, 39, 8, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 2, 46, 8, 2, 1, 2, 1, 2, 3,
-    2, 50, 8, 2, 1, 3, 4, 3, 53, 8, 3, 11, 3, 12, 3, 54, 1, 4, 1, 4, 1, 4, 1, 4, 1, 5, 1, 5, 1, 6, 1, 6, 1, 6, 0, 0, 7,
-    0, 2, 4, 6, 8, 10, 12, 0, 1, 1, 0, 2, 21, 64, 0, 15, 1, 0, 0, 0, 2, 21, 1, 0, 0, 0, 4, 49, 1, 0, 0, 0, 6, 52, 1, 0,
-    0, 0, 8, 56, 1, 0, 0, 0, 10, 60, 1, 0, 0, 0, 12, 62, 1, 0, 0, 0, 14, 16, 3, 2, 1, 0, 15, 14, 1, 0, 0, 0, 16, 17, 1,
-    0, 0, 0, 17, 15, 1, 0, 0, 0, 17, 18, 1, 0, 0, 0, 18, 19, 1, 0, 0, 0, 19, 20, 5, 0, 0, 1, 20, 1, 1, 0, 0, 0, 21, 22,
-    5, 1, 0, 0, 22, 23, 5, 27, 0, 0, 23, 25, 5, 23, 0, 0, 24, 26, 3, 4, 2, 0, 25, 24, 1, 0, 0, 0, 26, 27, 1, 0, 0, 0,
-    27, 25, 1, 0, 0, 0, 27, 28, 1, 0, 0, 0, 28, 29, 1, 0, 0, 0, 29, 30, 5, 24, 0, 0, 30, 3, 1, 0, 0, 0, 31, 33, 3, 10,
-    5, 0, 32, 31, 1, 0, 0, 0, 33, 34, 1, 0, 0, 0, 34, 32, 1, 0, 0, 0, 34, 35, 1, 0, 0, 0, 35, 36, 1, 0, 0, 0, 36, 38, 5,
-    27, 0, 0, 37, 39, 3, 6, 3, 0, 38, 37, 1, 0, 0, 0, 38, 39, 1, 0, 0, 0, 39, 40, 1, 0, 0, 0, 40, 41, 5, 22, 0, 0, 41,
-    50, 1, 0, 0, 0, 42, 43, 3, 12, 6, 0, 43, 45, 5, 27, 0, 0, 44, 46, 3, 6, 3, 0, 45, 44, 1, 0, 0, 0, 45, 46, 1, 0, 0,
-    0, 46, 47, 1, 0, 0, 0, 47, 48, 5, 22, 0, 0, 48, 50, 1, 0, 0, 0, 49, 32, 1, 0, 0, 0, 49, 42, 1, 0, 0, 0, 50, 5, 1, 0,
-    0, 0, 51, 53, 3, 8, 4, 0, 52, 51, 1, 0, 0, 0, 53, 54, 1, 0, 0, 0, 54, 52, 1, 0, 0, 0, 54, 55, 1, 0, 0, 0, 55, 7, 1,
-    0, 0, 0, 56, 57, 5, 25, 0, 0, 57, 58, 5, 28, 0, 0, 58, 59, 5, 26, 0, 0, 59, 9, 1, 0, 0, 0, 60, 61, 7, 0, 0, 0, 61,
-    11, 1, 0, 0, 0, 62, 63, 5, 27, 0, 0, 63, 13, 1, 0, 0, 0, 7, 17, 27, 34, 38, 45, 49, 54
+    4, 1, 34, 74, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7, 4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 1, 0,
+    4, 0, 18, 8, 0, 11, 0, 12, 0, 19, 1, 0, 1, 0, 1, 1, 3, 1, 25, 8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 31, 8, 1, 11, 1,
+    12, 1, 32, 1, 1, 1, 1, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 4, 3, 42, 8, 3, 11, 3, 12, 3, 43, 1, 3, 1, 3, 3, 3, 48, 8, 3,
+    1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 3, 3, 55, 8, 3, 1, 3, 1, 3, 3, 3, 59, 8, 3, 1, 4, 4, 4, 62, 8, 4, 11, 4, 12, 4, 63, 1,
+    5, 1, 5, 1, 5, 1, 5, 1, 6, 1, 6, 1, 7, 1, 7, 1, 7, 0, 0, 8, 0, 2, 4, 6, 8, 10, 12, 14, 0, 1, 1, 0, 3, 22, 73, 0, 17,
+    1, 0, 0, 0, 2, 24, 1, 0, 0, 0, 4, 36, 1, 0, 0, 0, 6, 58, 1, 0, 0, 0, 8, 61, 1, 0, 0, 0, 10, 65, 1, 0, 0, 0, 12, 69,
+    1, 0, 0, 0, 14, 71, 1, 0, 0, 0, 16, 18, 3, 2, 1, 0, 17, 16, 1, 0, 0, 0, 18, 19, 1, 0, 0, 0, 19, 17, 1, 0, 0, 0, 19,
+    20, 1, 0, 0, 0, 20, 21, 1, 0, 0, 0, 21, 22, 5, 0, 0, 1, 22, 1, 1, 0, 0, 0, 23, 25, 3, 4, 2, 0, 24, 23, 1, 0, 0, 0,
+    24, 25, 1, 0, 0, 0, 25, 26, 1, 0, 0, 0, 26, 27, 5, 1, 0, 0, 27, 28, 5, 31, 0, 0, 28, 30, 5, 24, 0, 0, 29, 31, 3, 6,
+    3, 0, 30, 29, 1, 0, 0, 0, 31, 32, 1, 0, 0, 0, 32, 30, 1, 0, 0, 0, 32, 33, 1, 0, 0, 0, 33, 34, 1, 0, 0, 0, 34, 35, 5,
+    25, 0, 0, 35, 3, 1, 0, 0, 0, 36, 37, 5, 29, 0, 0, 37, 38, 5, 2, 0, 0, 38, 39, 5, 30, 0, 0, 39, 5, 1, 0, 0, 0, 40,
+    42, 3, 12, 6, 0, 41, 40, 1, 0, 0, 0, 42, 43, 1, 0, 0, 0, 43, 41, 1, 0, 0, 0, 43, 44, 1, 0, 0, 0, 44, 45, 1, 0, 0, 0,
+    45, 47, 5, 31, 0, 0, 46, 48, 3, 8, 4, 0, 47, 46, 1, 0, 0, 0, 47, 48, 1, 0, 0, 0, 48, 49, 1, 0, 0, 0, 49, 50, 5, 23,
+    0, 0, 50, 59, 1, 0, 0, 0, 51, 52, 3, 14, 7, 0, 52, 54, 5, 31, 0, 0, 53, 55, 3, 8, 4, 0, 54, 53, 1, 0, 0, 0, 54, 55,
+    1, 0, 0, 0, 55, 56, 1, 0, 0, 0, 56, 57, 5, 23, 0, 0, 57, 59, 1, 0, 0, 0, 58, 41, 1, 0, 0, 0, 58, 51, 1, 0, 0, 0, 59,
+    7, 1, 0, 0, 0, 60, 62, 3, 10, 5, 0, 61, 60, 1, 0, 0, 0, 62, 63, 1, 0, 0, 0, 63, 61, 1, 0, 0, 0, 63, 64, 1, 0, 0, 0,
+    64, 9, 1, 0, 0, 0, 65, 66, 5, 26, 0, 0, 66, 67, 5, 32, 0, 0, 67, 68, 5, 27, 0, 0, 68, 11, 1, 0, 0, 0, 69, 70, 7, 0,
+    0, 0, 70, 13, 1, 0, 0, 0, 71, 72, 5, 31, 0, 0, 72, 15, 1, 0, 0, 0, 8, 19, 24, 32, 43, 47, 54, 58, 63
   ]
 
   private static __ATN: ATN
@@ -555,6 +608,9 @@ export class StructContext extends ParserRuleContext {
   public CURVED_BRACKET_CLOSE(): TerminalNode {
     return this.getToken(SchemaParser.CURVED_BRACKET_CLOSE, 0)
   }
+  public pathCommand(): PathCommandContext {
+    return this.getTypedRuleContext(PathCommandContext, 0) as PathCommandContext
+  }
   public type__list(): TypeContext[] {
     return this.getTypedRuleContexts(TypeContext) as TypeContext[]
   }
@@ -578,6 +634,40 @@ export class StructContext extends ParserRuleContext {
   public accept<Result>(visitor: SchemaVisitor<Result>): Result {
     if (visitor.visitStruct) {
       return visitor.visitStruct(this)
+    } else {
+      return visitor.visitChildren(this)
+    }
+  }
+}
+
+export class PathCommandContext extends ParserRuleContext {
+  constructor(parser?: SchemaParser, parent?: ParserRuleContext, invokingState?: number) {
+    super(parent, invokingState)
+    this.parser = parser
+  }
+  public AT(): TerminalNode {
+    return this.getToken(SchemaParser.AT, 0)
+  }
+  public STRING(): TerminalNode {
+    return this.getToken(SchemaParser.STRING, 0)
+  }
+  public get ruleIndex(): number {
+    return SchemaParser.RULE_pathCommand
+  }
+  public enterRule(listener: SchemaListener): void {
+    if (listener.enterPathCommand) {
+      listener.enterPathCommand(this)
+    }
+  }
+  public exitRule(listener: SchemaListener): void {
+    if (listener.exitPathCommand) {
+      listener.exitPathCommand(this)
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: SchemaVisitor<Result>): Result {
+    if (visitor.visitPathCommand) {
+      return visitor.visitPathCommand(this)
     } else {
       return visitor.visitChildren(this)
     }

@@ -14,8 +14,13 @@ import { StructBuilder } from './StructBuilder'
 import { VarType } from '../enums/VarType'
 import { StructCollection } from '../interfaces/StructCollection'
 
+interface StructResult {
+  path: string
+  template: StructCollection
+}
+
 export class SchemaReader {
-  private structs: Map<string, StructCollection> = new Map()
+  private structs: Map<string, StructResult> = new Map()
 
   private visitSchema(ctx: SchemaContext) {
     if (!ctx) return
@@ -25,12 +30,14 @@ export class SchemaReader {
 
   private visitStruct(ctx: StructContext) {
     if (!ctx) return
+    // get path
+    const path = ctx.pathCommand().STRING().getText().replaceAll('"', '').replaceAll("'", '')
     // create builder for struct
     const builder = new StructBuilder()
     // visit all structs
     for (const type of ctx.type__list()) this.visitType(type, builder)
     // save struct
-    this.structs.set(ctx.NAME().getText(), builder.build())
+    this.structs.set(ctx.NAME().getText(), { path, template: builder.build() })
   }
 
   private visitType(ctx: TypeContext, builder: StructBuilder) {
@@ -62,18 +69,18 @@ export class SchemaReader {
       const type = ctx.userType().getText()
       if (!this.structs.has(type)) throw new Error(`Unknown struct: ${type}`)
 
-      const struct = this.structs.get(type) as StructCollection
+      const struct = this.structs.get(type) as StructResult
 
       // Not a array
       if (array.length === 0) {
-        builder.addStruct(name, struct)
+        builder.addStruct(name, struct.template)
         return
       }
 
       // Is an array
       let arr = null
       for (let i = 1; i < array.length; i++)
-        arr = StructBuilder.createArray(arr === null ? StructBuilder.createStruct(struct) : arr, array[i])
+        arr = StructBuilder.createArray(arr === null ? StructBuilder.createStruct(struct.template) : arr, array[i])
       if (arr !== null) builder.addArray(name, arr, array[0])
     }
   }
@@ -106,11 +113,11 @@ export class SchemaReader {
     return res
   }
 
-  public getStructs(): Map<string, StructCollection> {
+  public getStructs(): Map<string, StructResult> {
     return this.structs
   }
 
-  public static read(path: string): Map<string, StructCollection> {
+  public static read(path: string): Map<string, StructResult> {
     const stream = new CharStream(readFileSync(resolve(path), 'utf-8'))
     const lexer = new SchemaLexer(stream)
     const tokens = new CommonTokenStream(lexer)

@@ -3,6 +3,7 @@ struct TestA {
     int b[2];
 }
 
+@PATH "test2"
 struct TestB {
     unsigned char c;
     TestA b;

@@ -4,6 +4,7 @@ import { ParseTreeListener } from 'antlr4'
 
 import { SchemaContext } from './SchemaParser'
 import { StructContext } from './SchemaParser'
+import { PathCommandContext } from './SchemaParser'
 import { TypeContext } from './SchemaParser'
 import { ArrayContext } from './SchemaParser'
 import { DimensionContext } from './SchemaParser'
@@ -35,6 +36,16 @@ export default class SchemaListener extends ParseTreeListener {
    * @param ctx the parse tree
    */
   exitStruct?: (ctx: StructContext) => void
+  /**
+   * Enter a parse tree produced by `SchemaParser.pathCommand`.
+   * @param ctx the parse tree
+   */
+  enterPathCommand?: (ctx: PathCommandContext) => void
+  /**
+   * Exit a parse tree produced by `SchemaParser.pathCommand`.
+   * @param ctx the parse tree
+   */
+  exitPathCommand?: (ctx: PathCommandContext) => void
   /**
    * Enter a parse tree produced by `SchemaParser.type`.
    * @param ctx the parse tree

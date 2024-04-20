@@ -6,8 +6,10 @@ grammar Schema;
 
 schema: struct+ EOF;
 
-// struct NAME { TYPES }
-struct: 'struct' NAME CURVED_BRACKET_OPEN type+ CURVED_BRACKET_CLOSE;
+// @PATH "TEST" struct NAME { TYPES } or struct NAME { TYPES }
+struct: pathCommand? 'struct' NAME CURVED_BRACKET_OPEN type+ CURVED_BRACKET_CLOSE;
+
+pathCommand: AT 'PATH' STRING;
 
 // int test; or int test[2];
 type: primitiveType+ NAME array? SEMICOLON
@@ -57,6 +59,12 @@ CURVED_BRACKET_CLOSE: '}';
 BRACKET_OPEN: '[';
 
 BRACKET_CLOSE: ']';
+
+DELIMITER: '\'' | '"' ;
+
+AT: '@';
+
+STRING: DELIMITER .*? DELIMITER;
 
 // A word can be letters [A-Za-z]+
 NAME: [A-Za-z]+;

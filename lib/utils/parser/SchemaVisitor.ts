@@ -4,6 +4,7 @@ import { ParseTreeVisitor } from 'antlr4'
 
 import { SchemaContext } from './SchemaParser'
 import { StructContext } from './SchemaParser'
+import { PathCommandContext } from './SchemaParser'
 import { TypeContext } from './SchemaParser'
 import { ArrayContext } from './SchemaParser'
 import { DimensionContext } from './SchemaParser'
@@ -30,6 +31,12 @@ export default class SchemaVisitor<Result> extends ParseTreeVisitor<Result> {
    * @return the visitor result
    */
   visitStruct?: (ctx: StructContext) => Result
+  /**
+   * Visit a parse tree produced by `SchemaParser.pathCommand`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitPathCommand?: (ctx: PathCommandContext) => Result
   /**
    * Visit a parse tree produced by `SchemaParser.type`.
    * @param ctx the parse tree
