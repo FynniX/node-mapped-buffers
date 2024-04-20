@@ -16,8 +16,10 @@ jobs:
         with:
           version: 8
 
-      - name: ANTLR4 Installation
-        run: sudo apt-get install -y antlr4
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: antlr4
+          version: 1.0
 
       - name: Setup environment
         run: pnpm install
