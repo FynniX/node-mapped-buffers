@@ -32,13 +32,14 @@
     "install": "pnpm run build:addon",
     "build:lib": "pnpm exec rimraf dist && pnpm exec rollup -c",
     "build:addon": "pnpm exec node-gyp rebuild",
-    "build": "pnpm run build:addon && pnpm run build:lib",
+    "build:parser": "pnpm exec rimraf lib/utils/parser && antlr4 -Dlanguage=TypeScript Schema.g4 -visitor -o lib/utils/parser",
+    "build": "pnpm run build:addon && pnpm run build:lib&& pnpm run build:parser",
     "pretest": "pnpm run build",
-    "test": "node --napi-modules ./test/test_binding.js",
+    "test": "node --napi-modules ./test/test_schema.js && node --napi-modules ./test/test_binding.js",
     "lint": "pnpm exec eslint lib/ --ext .ts",
     "lint:fix": "pnpm exec eslint lib/ --ext .ts --fix",
-    "format": "pnpm exec prettier lib/ --check --ignore-unknown",
-    "format:fix": "pnpm exec prettier lib/ --write --ignore-unknown",
+    "format": "pnpm exec prettier . --check --ignore-unknown",
+    "format:fix": "pnpm exec prettier . --write --ignore-unknown",
     "docs": "pnpm exec rimraf docs && pnpm exec typedoc",
     "prepare": "husky"
   },
@@ -69,6 +70,7 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
+    "antlr4": "4.13.1-patch-1",
     "node-addon-api": "^8.0.0"
   }
 }
