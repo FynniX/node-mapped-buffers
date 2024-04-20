@@ -8,6 +8,5 @@
   "themeColor": "#ff1e44",
   "navigationLinks": {
     "GitHub": "https://github.com/FynniX/node-mapped-buffer/"
-  },
-  "tsconfig": "tsconfig.docs.json"
+  }
 }
