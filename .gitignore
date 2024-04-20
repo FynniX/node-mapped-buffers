@@ -44,3 +44,9 @@ jspm_packages/
 
 # Codealike files
 codealike.json
+
+# Antlr
+.antlr/
+
+# Rollup folders
+dist/_virtual/

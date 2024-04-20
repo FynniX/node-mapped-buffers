@@ -2,3 +2,4 @@ build/
 dist/
 test/
 docs/
+lib/utils/parser/
